@@ -1,6 +1,7 @@
 //* Find elements
 const addBtn = document.querySelector('.add-btn');
 const deleteBtn = document.querySelector('.delete-btn');
+const recycleBtn = document.querySelector('.recycle-btn');
 const inProgressBtn = document.querySelector('.in-progress-btn');
 const completeBtn = document.querySelector('.complete-btn');
 const inputTask = document.querySelector('.task-input');
@@ -36,6 +37,12 @@ toDoList.addEventListener('click', event => {
 deleteBtn.addEventListener('click', event => {
     const selectedItem = document.querySelector('.selected');
     selectedItem.remove();
+})
+
+//* Add event listeners recycle BTN
+recycleBtn.addEventListener('click', event => {
+    const selectedItems = document.querySelectorAll('.list-item');
+    selectedItems.forEach(el => el.remove());
 })
 
 //* Add event listeners in-progress-btn

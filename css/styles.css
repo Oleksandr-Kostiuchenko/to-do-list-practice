@@ -187,6 +187,7 @@ body {
     background-color: #212A31;
     color: white;
     border-radius: 8px;
+    margin-bottom: 10px;
 
     transition: transform 250ms linear, background-color 250ms linear, color 250ms linear;
 }
@@ -194,6 +195,25 @@ body {
 .delete-btn:hover{
     transform: scale(1.1);
     background-color: #e44225;
+    color: #ffffff;
+}
+
+.recycle-btn{
+    width: 200px;
+    height: 40px;
+    display: block;
+
+    border: none;
+    background-color: #212A31;
+    color: white;
+    border-radius: 8px;
+
+    transition: transform 250ms linear, background-color 250ms linear, color 250ms linear;
+}
+
+.recycle-btn:hover{
+    transform: scale(1.1);
+    background-color: #4f0848;
     color: #ffffff;
 }
 
