@@ -3,19 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS-practice-module-8</title>
+    <title>To-do-list</title>
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="./css/styles.css">
+    <script src="./js/script.js" type="module"></script>
 </head>
 <body>
-    <ul class="link-list">
-        <li class="list-element">
-            <a href="./html/task-1.html">Task 1</a>
-        </li>
-        <li class="list-element">
-            <a href="./html/task-2.html">Task 2</a>
-        </li>
-        <li class="list-element"></li>
-    </ul>
+    <h1 class="page-title">Get your things done with productivity!</h1>
+
+    <div class="container">
+        <ul class="task-list to-do-list">
+            <h2 class="list-title">📃To-do-list:</h2>
+        </ul>
+        <ul class="task-list in-progress-list">
+            <h2 class="list-title">⚒️In progress:</h2>
+        </ul>
+        <ul class="task-list completed-list">
+            <h2 class="list-title">✅Completed:</h2>
+        </ul>
+    </div>
+
+    <div class="control-panel">
+        <div class="add-panel">
+            <input class="task-input" type="text" placeholder="Write task">
+            <button class="add-btn">Add task</button>
+        </div>
+        <div class="delete-panel">
+            <button class="delete-btn">Delete</button>
+        </div>
+        <div class="in-progress-panel">
+            <button class="in-progress-btn">In progress</button>
+        </div>
+        <div class="complete-panel">
+            <button class="complete-btn">Complete</button>
+        </div>
+    </div>
 </body>
 </html>
