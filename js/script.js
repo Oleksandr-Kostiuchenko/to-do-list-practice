@@ -87,8 +87,6 @@ completedList.addEventListener('click', event => {
 })
 
 //* Add event listeners to selected items for modal
-
-
 toDoList.addEventListener('dblclick', event => {
     const instance = basicLightbox.create(`
         <div class="modal">
