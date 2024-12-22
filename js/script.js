@@ -51,7 +51,10 @@ inProgressBtn.addEventListener('click', event => {
     selectedItem.remove();
 
     const selectedCopy = selectedItem;
-    inProgresslist.insertAdjacentHTML('beforeend', `<li class="list-item">${selectedCopy.textContent}</li>`);
+    inProgresslist.insertAdjacentHTML('beforeend', 
+        `<li class="list-item">
+            ${selectedCopy.textContent}
+        </li>`);
 })
 
 //* Add event listeners in-progress-list selected
@@ -80,5 +83,101 @@ completedList.addEventListener('click', event => {
         items.forEach(el => el.classList.remove('selected'));
 
         event.target.classList.toggle('selected');
+    }
+})
+
+//* Add event listeners to selected items for modal
+
+
+toDoList.addEventListener('dblclick', event => {
+    const instance = basicLightbox.create(`
+        <div class="modal">
+            <p class="modal-text">${event.target.textContent}</p>
+            <p class="description-text"></p>
+
+            <input class="description-input" placeholder="Add description">
+            <button class="add-description-btn" type="button">Add</button>
+
+            <a class="close">Close</a>
+        </div>
+    `, {
+        onShow: (instance) => {
+            instance.element().querySelector('a').onclick = instance.close;
+
+            const descriptionBtn = instance.element().querySelector('.add-description-btn');
+            const descriptionInput = instance.element().querySelector('.description-input');
+            const descriptionText = instance.element().querySelector('.description-text');
+
+            descriptionBtn.addEventListener('click', () => {
+                descriptionText.textContent = descriptionInput.value;
+                descriptionInput.value = '';
+            });
+        }
+    })
+
+    if(event.target.classList.contains('list-item') && event.target.classList.contains('selected')){
+        instance.show();
+    }
+})
+
+inProgresslist.addEventListener('dblclick', event => {
+    const instance = basicLightbox.create(`
+        <div class="modal">
+            <p class="modal-text">${event.target.textContent}</p>
+            <p class="description-text"></p>
+
+            <input class="description-input" placeholder="Add description">
+            <button class="add-description-btn" type="button">Add</button>
+
+            <a class="close">Close</a>
+        </div>
+    `, {
+        onShow: (instance) => {
+            instance.element().querySelector('a').onclick = instance.close;
+
+            const descriptionBtn = instance.element().querySelector('.add-description-btn');
+            const descriptionInput = instance.element().querySelector('.description-input');
+            const descriptionText = instance.element().querySelector('.description-text');
+
+            descriptionBtn.addEventListener('click', () => {
+                descriptionText.textContent = descriptionInput.value;
+                descriptionInput.value = '';
+            });
+        }
+    })
+
+    if(event.target.classList.contains('list-item') && event.target.classList.contains('selected')){
+        instance.show();
+    }
+})
+
+completedList.addEventListener('dblclick', event => {
+    const instance = basicLightbox.create(`
+        <div class="modal">
+            <p class="modal-text">${event.target.textContent}</p>
+            <p class="description-text"></p>
+
+            <input class="description-input" placeholder="Add description">
+            <button class="add-description-btn" type="button">Add</button>
+
+            <a class="close">Close</a>
+        </div>
+    `, {
+        onShow: (instance) => {
+            instance.element().querySelector('a').onclick = instance.close;
+
+            const descriptionBtn = instance.element().querySelector('.add-description-btn');
+            const descriptionInput = instance.element().querySelector('.description-input');
+            const descriptionText = instance.element().querySelector('.description-text');
+
+            descriptionBtn.addEventListener('click', () => {
+                descriptionText.textContent = descriptionInput.value;
+                descriptionInput.value = '';
+            });
+        }
+    })
+
+    if(event.target.classList.contains('list-item') && event.target.classList.contains('selected')){
+        instance.show();
     }
 })
