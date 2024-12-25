@@ -219,7 +219,9 @@ inProgresslist.addEventListener('dblclick', event => {
     const instance = basicLightbox.create(`
         <div class="modal">
             <p class="modal-text">${event.target.textContent}</p>
-            <p class="description-text"></p>
+            <p class="description-text">
+                ${localStorage.getItem(`${event.target.textContent}`)}
+            </p>
 
             <input class="description-input" placeholder="Add description">
             <button class="add-description-btn" type="button">Add</button>
@@ -235,8 +237,12 @@ inProgresslist.addEventListener('dblclick', event => {
             const descriptionText = instance.element().querySelector('.description-text');
 
             descriptionBtn.addEventListener('click', () => {
-                descriptionText.textContent = descriptionInput.value;
-                descriptionInput.value = '';
+                if(descriptionInput.value.trim() !== ''){
+                    localStorage.setItem(`${event.target.textContent}`, `${descriptionInput.value}`);
+                    descriptionText.textContent = localStorage.getItem(`${event.target.textContent}`); 
+
+                    descriptionInput.value = '';
+                }
             });
         }
     })
@@ -250,7 +256,9 @@ completedList.addEventListener('dblclick', event => {
     const instance = basicLightbox.create(`
         <div class="modal">
             <p class="modal-text">${event.target.textContent}</p>
-            <p class="description-text"></p>
+            <p class="description-text">
+                ${localStorage.getItem(`${event.target.textContent}`)}
+            </p>
 
             <input class="description-input" placeholder="Add description">
             <button class="add-description-btn" type="button">Add</button>
@@ -266,8 +274,12 @@ completedList.addEventListener('dblclick', event => {
             const descriptionText = instance.element().querySelector('.description-text');
 
             descriptionBtn.addEventListener('click', () => {
-                descriptionText.textContent = descriptionInput.value;
-                descriptionInput.value = '';
+                if(descriptionInput.value.trim() !== ''){
+                    localStorage.setItem(`${event.target.textContent}`, `${descriptionInput.value}`);
+                    descriptionText.textContent = localStorage.getItem(`${event.target.textContent}`); 
+
+                    descriptionInput.value = '';
+                }
             });
         }
     })
