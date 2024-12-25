@@ -1,4 +1,8 @@
 //* Find elements
+const updatedTodoList = [];
+
+let HTMLtasksArr = [];
+let HTMLinProgresTasks = [];
 const addBtn = document.querySelector('.add-btn');
 const deleteBtn = document.querySelector('.delete-btn');
 const recycleBtn = document.querySelector('.recycle-btn');
@@ -16,11 +20,19 @@ const fillTasks = () => {
         if(sessionStorage.length === 0){
             return;
         }
-    
-        const TasksFromSS = JSON.parse(sessionStorage.getItem('tasks')).join('');
-        console.log(TasksFromSS)
-    
-        toDoList.insertAdjacentHTML('beforeend', TasksFromSS);
+
+        const TasksFromSS = JSON.parse(sessionStorage.getItem('tasks'));
+        const TasksInProgressFromSS = JSON.parse(sessionStorage.getItem('inProgressTasks'));
+
+        // console.log(TasksFromSS);
+        if(TasksFromSS !== null){
+            HTMLtasksArr = TasksFromSS;
+        } if(TasksInProgressFromSS !== null){
+            HTMLinProgresTasks = TasksInProgressFromSS;
+        }
+
+        toDoList.insertAdjacentHTML('beforeend', TasksFromSS.join(''));
+        inProgresslist.insertAdjacentHTML('beforeend', TasksInProgressFromSS.join(''));
     } catch(err){
         console.log(err);
     }
@@ -33,7 +45,6 @@ const createTaskTemplate = () => {
     return `<li class="list-item">📌${inputTask.value}</li>`;
 } 
 
-const HTMLtasksArr = [];
 //* Add event listeners Add btn
 addBtn.addEventListener('click', event => {
     if(inputTask.value.trim() !== ''){
@@ -46,10 +57,6 @@ addBtn.addEventListener('click', event => {
         inputTask.value = '';
     }
 })
-
-// document.addEventListener('load', event => {
-//     toDoList.insertAdjacentHTML('beforeend', sessionStorage.forEach(el => sessionStorage.getItem(el)));
-// })
 
 //* Add event listeners to-do-list selected
 toDoList.addEventListener('click', event => {
@@ -64,29 +71,60 @@ toDoList.addEventListener('click', event => {
 //* Add event listeners delete BTN
 deleteBtn.addEventListener('click', event => {
     const selectedItem = document.querySelector('.selected');
-    
+    if (!selectedItem) {
+        alert('Please select a task to delete.');
+        return;
+    }
 
     selectedItem.remove();
-})
+
+    const tasks = JSON.parse(sessionStorage.getItem('tasks'));
+
+    const taskIndex = tasks.findIndex(task => task.includes(selectedItem.textContent.trim()));
+
+    if (taskIndex !== -1) {
+        tasks.splice(taskIndex, 1);
+        sessionStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+});
+
 
 //* Add event listeners recycle BTN
 recycleBtn.addEventListener('click', event => {
     const selectedItems = document.querySelectorAll('.list-item');
     selectedItems.forEach(el => el.remove());
 
+    HTMLtasksArr = [];
+    sessionStorage.setItem('tasks', '');
     sessionStorage.removeItem('tasks');
+
+    HTMLinProgresTasks = [];
+    sessionStorage.setItem('inProgressTasks', '');
+    sessionStorage.removeItem('inProgressTasks');
 })
 
 //* Add event listeners in-progress-btn
 inProgressBtn.addEventListener('click', event => {
     const selectedItem = document.querySelector('.selected');
     selectedItem.remove();
-
     const selectedCopy = selectedItem;
-    inProgresslist.insertAdjacentHTML('beforeend', 
-        `<li class="list-item">
-            ${selectedCopy.textContent}
-        </li>`);
+
+    const inProgressHtmlTask = `<li class="list-item">${selectedCopy.textContent}</li>`;
+    inProgresslist.insertAdjacentHTML('beforeend', inProgressHtmlTask);
+
+    HTMLinProgresTasks.push(inProgressHtmlTask);
+    sessionStorage.setItem(`inProgressTasks`, JSON.stringify(HTMLinProgresTasks));
+
+    const toDoListHTML = JSON.parse(sessionStorage.getItem('tasks'));
+    // console.log(toDoListHTML);
+
+    toDoListHTML.map(el => {
+        if(el !== inProgressHtmlTask) {
+            updatedTodoList.push(el);
+        }
+    })
+    
+    sessionStorage.setItem('tasks', JSON.stringify(updatedTodoList));
 })
 
 //* Add event listeners in-progress-list selected
