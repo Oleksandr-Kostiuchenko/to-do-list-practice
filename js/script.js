@@ -6,6 +6,7 @@ let HTMLtasksArr = [];
 let HTMLinProgresTasks = [];
 let HTMLCompletedTasks = [];
 
+const timeP = document.querySelector('.time-p');
 const addBtn = document.querySelector('.add-btn');
 const deleteBtn = document.querySelector('.delete-btn');
 const recycleBtn = document.querySelector('.recycle-btn');
@@ -16,6 +17,11 @@ const inputTask = document.querySelector('.task-input');
 const toDoList = document.querySelector('.to-do-list');
 const inProgresslist = document.querySelector('.in-progress-list');
 const completedList = document.querySelector('.completed-list');
+
+//* Time
+const now = new Date();
+console.log(date.format(now, 'HH:mm DD/MM'));
+timeP.textContent = date.format(now, 'HH:mm');
 
 //* Renovate input content
 inputTask.addEventListener('input', event => {
