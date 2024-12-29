@@ -17,16 +17,26 @@ const toDoList = document.querySelector('.to-do-list');
 const inProgresslist = document.querySelector('.in-progress-list');
 const completedList = document.querySelector('.completed-list');
 
+//* Renovate input content
+inputTask.addEventListener('input', event => {
+    const taskText = event.target.value;
+    localStorage.setItem('inputTask', taskText);
+});
+
 //* Renovate tasks
 const fillTasks = () => {
     try {
-        if(sessionStorage.length === 0){
+        if(localStorage.length === 0){ //Исправить проверку, на коректную
             return;
         }
 
-        const TasksFromSS = JSON.parse(sessionStorage.getItem('tasks'));
-        const TasksInProgressFromSS = JSON.parse(sessionStorage.getItem('inProgressTasks'));
-        const TasksCompletedFromSS = JSON.parse(sessionStorage.getItem('completedTasks'));
+        if(localStorage.getItem('inputTask')){
+            inputTask.value = localStorage.getItem('inputTask');
+        }
+
+        const TasksFromSS = JSON.parse(localStorage.getItem('tasks'));
+        const TasksInProgressFromSS = JSON.parse(localStorage.getItem('inProgressTasks'));
+        const TasksCompletedFromSS = JSON.parse(localStorage.getItem('completedTasks'));
 
         // console.log(TasksFromSS);
         if(TasksFromSS !== null){
@@ -59,8 +69,9 @@ addBtn.addEventListener('click', event => {
         toDoList.insertAdjacentHTML('beforeend', HTMLTask);
 
         HTMLtasksArr.push(HTMLTask);
-        sessionStorage.setItem(`tasks`, JSON.stringify(HTMLtasksArr));
+        localStorage.setItem(`tasks`, JSON.stringify(HTMLtasksArr));
 
+        localStorage.removeItem('inputTask');
         inputTask.value = '';
     }
 })
@@ -83,15 +94,34 @@ deleteBtn.addEventListener('click', event => {
         return;
     }
 
+    console.log(selectedItem);
     selectedItem.remove();
 
-    const tasks = JSON.parse(sessionStorage.getItem('tasks'));
+    let tasks = [];
+    if(selectedItem.dataset.list === 'to-do') {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
 
-    const taskIndex = tasks.findIndex(task => task.includes(selectedItem.textContent.trim()));
+        const taskIndex = tasks.find(task => task.includes(selectedItem.textContent.trim()));
+        if (taskIndex !== -1) {
+            tasks.splice(taskIndex, 1);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+    }else if(selectedItem.dataset.list === 'in-progress'){
+        tasks = JSON.parse(localStorage.getItem('inProgressTasks'));
 
-    if (taskIndex !== -1) {
-        tasks.splice(taskIndex, 1);
-        sessionStorage.setItem('tasks', JSON.stringify(tasks));
+        const taskIndex = tasks.find(task => task.includes(selectedItem.textContent.trim()));
+        if (taskIndex !== -1) {
+            tasks.splice(taskIndex, 1);
+            localStorage.setItem('inProgressTasks', JSON.stringify(tasks));
+        }
+    }else if(selectedItem.dataset.list === 'completed'){
+        tasks = JSON.parse(localStorage.getItem('completedTasks'));
+
+        const taskIndex = tasks.find(task => task.includes(selectedItem.textContent.trim()));
+        if (taskIndex !== -1) {
+            tasks.splice(taskIndex, 1);
+            localStorage.setItem('completedTasks', JSON.stringify(tasks));
+        }
     }
 });
 
@@ -102,13 +132,13 @@ recycleBtn.addEventListener('click', event => {
     selectedItems.forEach(el => el.remove());
 
     HTMLtasksArr = [];
-    sessionStorage.removeItem('tasks');
+    localStorage.removeItem('tasks');
 
     HTMLinProgresTasks = [];
-    sessionStorage.removeItem('inProgressTasks');
+    localStorage.removeItem('inProgressTasks');
 
     HTMLCompletedTasks = [];
-    sessionStorage.removeItem('completedTasks');
+    localStorage.removeItem('completedTasks');
 })
 
 //* Add event listeners in-progress-btn
@@ -122,13 +152,13 @@ inProgressBtn.addEventListener('click', event => {
         inProgresslist.insertAdjacentHTML('beforeend', inProgressHtmlTask);
     
         HTMLinProgresTasks.push(inProgressHtmlTask);
-        sessionStorage.setItem(`inProgressTasks`, JSON.stringify(HTMLinProgresTasks));
+        localStorage.setItem(`inProgressTasks`, JSON.stringify(HTMLinProgresTasks));
     
-        const toDoListHTML = JSON.parse(sessionStorage.getItem('tasks'));
+        const toDoListHTML = JSON.parse(localStorage.getItem('tasks'));
 
         const updatedTodoList = toDoListHTML.filter(el => el !== `<li class="list-item" data-list="to-do">${selectedCopy.textContent}</li>`);
         
-        sessionStorage.setItem('tasks', JSON.stringify(updatedTodoList));
+        localStorage.setItem('tasks', JSON.stringify(updatedTodoList));
     } else{
         return;
     }
@@ -155,12 +185,12 @@ completeBtn.addEventListener('click', event => {
         completedList.insertAdjacentHTML('beforeend', CompletedHTMLTask);
     
         HTMLCompletedTasks.push(CompletedHTMLTask);
-        sessionStorage.setItem(`completedTasks`, JSON.stringify(HTMLCompletedTasks));
+        localStorage.setItem(`completedTasks`, JSON.stringify(HTMLCompletedTasks));
     
-        const inProgressHTML = JSON.parse(sessionStorage.getItem('inProgressTasks'));
+        const inProgressHTML = JSON.parse(localStorage.getItem('inProgressTasks'));
         const updatedInProgressList = inProgressHTML.filter(el => el !== `<li class="list-item" data-list="in-progress">${selectedCopy.textContent}</li>`);
         
-        sessionStorage.setItem('inProgressTasks', JSON.stringify(updatedInProgressList));
+        localStorage.setItem('inProgressTasks', JSON.stringify(updatedInProgressList));
     } else{
         return;
     }
