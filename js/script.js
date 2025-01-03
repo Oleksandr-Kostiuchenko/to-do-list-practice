@@ -19,9 +19,22 @@ const inProgresslist = document.querySelector('.in-progress-list');
 const completedList = document.querySelector('.completed-list');
 
 //* Time
-const now = new Date();
-console.log(date.format(now, 'HH:mm DD/MM'));
-timeP.textContent = date.format(now, 'HH:mm');
+window.onload = function() {
+    window.setInterval(function() {
+        const timeNow = new Date();
+        const timeObj = {
+        hours: timeNow.getHours() <= 9 ? `0${timeNow.getHours()}`: timeNow.getHours(),
+        minuts: timeNow.getMinutes() <= 9 ? `0${timeNow.getMinutes()}`: timeNow.getMinutes(),
+        seconds: timeNow.getSeconds()<= 9 ? `0${timeNow.getSeconds()}`: timeNow.getSeconds(),
+
+        clock() {
+            return(`${this.hours}:${this.minuts}:${this.seconds}`)
+        }
+    }
+
+    timeP.textContent = timeObj.clock();
+    })
+}
 
 //* Renovate input content
 inputTask.addEventListener('input', event => {
@@ -215,11 +228,17 @@ completedList.addEventListener('click', event => {
 //* Add event listeners to selected items for modal
 
 toDoList.addEventListener('dblclick', event => {
+    let descriptionTxt;
+    if(localStorage.getItem(`${event.target.textContent}`) !== null){
+        descriptionTxt = localStorage.getItem(`${event.target.textContent}`);
+    }else{
+        descriptionTxt = 'Description is not added yet';
+    }
     const instance = basicLightbox.create(`
         <div class="modal">
             <p class="modal-text">${event.target.textContent}</p>
             <p class="description-text">
-                ${localStorage.getItem(`${event.target.textContent}`)}
+                ${descriptionTxt}
             </p>
 
             <input class="description-input" placeholder="Add description">
